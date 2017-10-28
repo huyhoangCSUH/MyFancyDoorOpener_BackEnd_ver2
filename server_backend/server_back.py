@@ -99,9 +99,9 @@ def predict(img):
     label_text = subjects[label]
 
     # draw a rectangle around face detected
-    #draw_rectangle(img, rect)
+    draw_rectangle(img, rect)
     # draw name of predicted person
-    #draw_text(img, label_text + " Conf: "+ str(int(confidence)), rect[0], rect[1] - 5)
+    draw_text(img, label_text, rect[0], rect[1] - 5)
     return img, label_text
 
 #HOST = '127.0.0.1'
@@ -119,7 +119,7 @@ while 1:
         pilot_msg = conn.recv(20)
         print("Accepting connection from: " + str(addr))
         print(pilot_msg)
-        conn.close()
+
 
         if pilot_msg == "person_distance":
             print "Getting person distance"
@@ -156,7 +156,12 @@ while 1:
             with open('person_name.txt') as f:
                 f.write(person)
 
+        elif pilot_msg == "asking_for_auth":
+            with open('person_name.txt') as f:
+                auth_code = f.read()
+            sock.send(auth_code)
 
+        conn.close()
     except Exception as msg:
         print str(msg)
 

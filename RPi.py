@@ -6,7 +6,7 @@ import sys
 import time
 import cv2
 import VL53L0X
-
+import pyttsx
 
 HOST = '45.55.226.236'
 PORT = 9999
@@ -31,21 +31,18 @@ def send_video_file(file_to_send):
     file_to_send.close()
     s.close()
 
-tof = VL53L0X.VL53L0X()
-tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)
-
 
 def get_distance_from_sensor():
-    distance = 0 # in mm
+    tof = VL53L0X.VL53L0X()
+    tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)
     try:
         distance = tof.get_distance()
+        tof.stop_ranging()
         return str(distance)
     except Exception as err:
         print "Error: " + err
+        tof.stop_ranging()
         return '0'
-
-
-    #return str(distance)
 
 
 def send_distance(distance):
@@ -59,19 +56,18 @@ def send_distance(distance):
     s.send(distance)
     s.close()
 
-# cam = Camera()
-# time.sleep(1)
-#
-# while 1:
-#     img = cam.getImage()
-#     img.save("webcam_cap.jpg")
-#     print "Sending a frame"
-#     send_video_file("webcam_cap.jpg")
-#     time.sleep(1/24)
 
-# Taking distance
-# Create a VL53L0X object
-
+def asking_auth():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send("asking_for_auth")
+    auth_code = s.recv(10)
+    auth_code = auth_code.strip()
+    print(auth_code)
+    if auth_code == '1':
+        engine = pyttsx.init()
+        engine.say('Welcome home son of the bitch.')
+        engine.runAndWait()
 
 
 # Start streaming webcam
@@ -94,6 +90,8 @@ while 1:
         person_distance = get_distance_from_sensor()
         send_distance(person_distance)
 
+        asking_auth()
+
         #have_face, face, rect = extract_a_face(frame, 1.2)
         #person_info = ""
         #if have_face:
@@ -107,7 +105,7 @@ while 1:
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
-    time.sleep(2)
+    time.sleep(5)
 
 
 cam.release()
