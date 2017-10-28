@@ -157,7 +157,7 @@ while 1:
                 f.write(person)
 
         elif pilot_msg == "asking_for_auth":
-            with open('person_name.txt') as f:
+            with open('auth_stat.txt') as f:
                 auth_code = f.read()
             sock.send(auth_code)
 

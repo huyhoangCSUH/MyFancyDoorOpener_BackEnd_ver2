@@ -68,7 +68,7 @@ def asking_auth():
         engine = pyttsx.init()
         engine.say('Welcome home son of the bitch.')
         engine.runAndWait()
-
+    return
 
 # Start streaming webcam
 print "Starting camera."
