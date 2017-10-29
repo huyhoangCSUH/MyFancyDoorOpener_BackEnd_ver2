@@ -31,13 +31,14 @@ def send_video_file(file_to_send):
     file_to_send.close()
     s.close()
 
+tof = VL53L0X.VL53L0X()
+tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)
 
 def get_distance_from_sensor():
-    tof = VL53L0X.VL53L0X()
-    tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)
+
     try:
         distance = tof.get_distance()
-        tof.stop_ranging()
+
         return str(distance)
     except Exception as err:
         print "Error: " + err
@@ -61,12 +62,13 @@ def asking_auth():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
     s.send("asking_for_auth")
+
     auth_code = s.recv(10)
     auth_code = auth_code.strip()
     print(auth_code)
     if auth_code == '1':
         engine = pyttsx.init()
-        engine.say('Welcome home son of the bitch.')
+        engine.say('Welcome home!.')
         engine.runAndWait()
     return
 
@@ -105,9 +107,9 @@ while 1:
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
-    time.sleep(5)
+    time.sleep(2)
 
-
+tof.stop_ranging()
 cam.release()
 cv2.destroyAllWindows()
 
