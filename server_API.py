@@ -32,22 +32,18 @@ def set_auth():
     return "Auth set!"
 
 
-def load_photo():
-    while True:
-        try:
-            frame = open(path_for_files + '/video/web_cap.jpg').read()
-        except IOError:
-            print "IOError"
-        finally:
-            yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
 @app.route('/resetauth', methods=['POST'])
 def reset_auth():
     with open(path_for_files + "/auth_stat.txt", "w") as f:
         f.write("0")
     return "Auth reset!"
+
+
+def load_photo():
+    while True:
+        frame = open(path_for_files + '/video/web_cap.jpg').read()
+        yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route('/video_feed')
