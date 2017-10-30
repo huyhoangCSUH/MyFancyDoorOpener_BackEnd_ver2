@@ -48,7 +48,7 @@ def verify(photo):
 
 def recognize(photo):
     url = "https://api.kairos.com/recognize"
-
+    path_for_files = "/home/huy/MyFancyDoorOpener_BackEnd_ver2/server_backend"
     headr = {
         'Content-type': 'application/json',
         'app_id': '38280dd7',
@@ -65,13 +65,13 @@ def recognize(photo):
     response = json.loads(r.content)
     person_name = 'Unidentified!'
     print response
-    try:
-        person_name = response['images'][0]['candidates'][0]['subject_id']
-    except Exception as e:
-        print "Error recognizing face: " + str(e)
+    if response['images'][0]['transaction']['subject_id']:
+        person_name = response['images'][0]['transaction']['subject_id']
 
-    print person_name
+    with open(path_for_files + "/person_distance.txt", 'w') as f:
+        f.write(person_name)
+    #print person_name
     return person_name
 
-photofile = '/Users/huyhoang/PycharmProjects/MyFancyDoorOpener_BackEnd_ver2/server_backend/training-data/person0/9.jpg'
-recognize(photofile)
+#photofile = '/Users/huyhoang/PycharmProjects/MyFancyDoorOpener_BackEnd_ver2/server_backend/training-data/person0/9.jpg'
+#recognize(photofile)

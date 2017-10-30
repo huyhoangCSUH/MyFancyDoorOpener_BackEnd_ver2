@@ -1,6 +1,6 @@
 from gevent.wsgi import WSGIServer
 from flask import Flask, send_from_directory, Response
-import faceReg_API as fr
+import faceRec_API as fr
 
 app = Flask(__name__)
 
