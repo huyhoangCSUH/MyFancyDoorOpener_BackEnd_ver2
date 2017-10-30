@@ -1,5 +1,7 @@
-
+from gevent.wsgi import WSGIServer
 from flask import Flask, send_from_directory, Response
+import faceReg_API as fr
+
 app = Flask(__name__)
 
 
@@ -11,6 +13,8 @@ def index():
 
 @app.route('/getname')
 def get_name():
+    person_name = fr.recognize(path_for_files + '/video/web_cap.jpg')
+
     with open(path_for_files + "/person_name.txt", "r") as fin:
         person_name = fin.read()
         # print person_info
@@ -51,5 +55,10 @@ def video_feed():
     return Response(load_photo(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000, threaded=True)
+
+
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=8000, threaded=True)
+
+http_server = WSGIServer(('', 8000), app)
+http_server.serve_forever()

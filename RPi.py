@@ -23,16 +23,17 @@ def send_video_file(file_to_send):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
     file_to_send = open(file_to_send, 'rb')
-    l = file_to_send.read(1024)
+    l = file_to_send.read(5*1024)
     while l:
         #print 'Sending...'
         s.send(l)
-        l = file_to_send.read(1024)
+        l = file_to_send.read(5*1024)
     file_to_send.close()
     s.close()
 
 tof = VL53L0X.VL53L0X()
 tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)
+
 
 def get_distance_from_sensor():
 
@@ -81,7 +82,7 @@ print "Start capturing images"
 while 1:
     ret, frame = cam.read()
     if ret:
-        frame = cv2.resize(frame, (800, 450))
+        frame = cv2.resize(frame, (480, 270))
         cv2.imwrite("webcam_cap.jpg", frame)
 
         print "Sending a frame"
@@ -107,7 +108,7 @@ while 1:
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
-    time.sleep(2)
+    time.sleep(1)
 
 tof.stop_ranging()
 cam.release()
