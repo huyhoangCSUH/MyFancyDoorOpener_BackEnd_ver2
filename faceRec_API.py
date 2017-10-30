@@ -68,8 +68,6 @@ def recognize(photo):
     if response['images'][0]['transaction']['subject_id']:
         person_name = response['images'][0]['transaction']['subject_id']
 
-    with open(path_for_files + "/person_distance.txt", 'w') as f:
-        f.write(person_name)
     #print person_name
     return person_name
 

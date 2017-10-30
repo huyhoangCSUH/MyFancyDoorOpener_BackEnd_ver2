@@ -14,12 +14,14 @@ def index():
 @app.route('/getname')
 def get_name():
     person_name = fr.recognize(path_for_files + '/video/web_cap.jpg')
-
-    with open(path_for_files + "/person_name.txt", "r") as fin:
-        person_name = fin.read()
-        # print person_info
-        return person_name
-
+    # with open(path_for_files + "/person_name.txt", 'w') as f:
+    #     f.write(person_name)
+    #
+    # with open(path_for_files + "/person_name.txt", "r") as fin:
+    #     person_name = fin.read()
+    #     # print person_info
+    #     return person_name
+    return person_name
 
 @app.route('/getdistance')
 def get_distance():
