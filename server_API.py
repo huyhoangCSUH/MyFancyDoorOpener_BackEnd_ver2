@@ -23,6 +23,7 @@ def get_name():
     #     return person_name
     return person_name
 
+
 @app.route('/getdistance')
 def get_distance():
     with open(path_for_files + "/person_distance.txt", "r") as fin:
@@ -31,14 +32,14 @@ def get_distance():
         return person_distance
 
 
-@app.route('/setauth', methods=['POST'])
+@app.route('/setauth', methods=['GET', 'POST'])
 def set_auth():
     with open(path_for_files + "/auth_stat.txt", "w") as f:
         f.write("1")
     return "Auth set!"
 
 
-@app.route('/resetauth', methods=['POST'])
+@app.route('/resetauth', methods=['GET', 'POST'])
 def reset_auth():
     with open(path_for_files + "/auth_stat.txt", "w") as f:
         f.write("0")
