@@ -65,8 +65,10 @@ def recognize(photo):
     response = json.loads(r.content)
     person_name = 'Unidentified!'
     print response
-    if response['images'][0]['transaction']['subject_id']:
-        person_name = response['images'][0]['transaction']['subject_id']
+
+    if 'images' in response:
+        if 'subject_id' in ['images'][0]['transaction']:
+            person_name = response['images'][0]['transaction']['subject_id']
 
     #print person_name
     return person_name
