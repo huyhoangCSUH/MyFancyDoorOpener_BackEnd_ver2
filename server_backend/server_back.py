@@ -4,7 +4,7 @@ import cv2
 from time import sleep
 import socket
 import time
-import face_recognition as fr
+import faceRec_API as fr
 
 
 #HOST = '127.0.0.1'
