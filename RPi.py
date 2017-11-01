@@ -3,8 +3,10 @@ import cv2
 import VL53L0X
 import pyttsx
 import time
+import sys
 
-HOST = '45.55.226.236'
+# Get the server IP from the terminal
+HOST = str(sys.argv[0])
 PORT = 9999
 PORT_UDP = 10000
 
@@ -73,14 +75,16 @@ def asking_for_framerate():
 print "Starting camera."
 cam = cv2.VideoCapture(0)
 time.sleep(1)
-frame_rate = 24
+
+# Retrieving frame rate for the first time
+frame_rate = asking_for_framerate()
 start = time.time()
 
 print "Start capturing images"
 while 1:
     end = time.time()
 
-    #Check frame rate request after every 15 seconds
+    #Check new frame rate after every 15 seconds
     if end - start > 15:
         frame_rate = asking_for_framerate()
         start = time.time()

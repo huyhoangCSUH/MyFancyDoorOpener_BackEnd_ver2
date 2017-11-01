@@ -1,12 +1,11 @@
 from gevent.wsgi import WSGIServer
 from flask import Flask, request, Response
 import faceRec_API as fr
-
+import os
 app = Flask(__name__)
 
-
-path_for_files = "/home/huy/MyFancyDoorOpener_BackEnd_ver2/server_backend"
-
+userhome = os.path.expanduser('~')
+path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
 
 @app.route('/')
 def index():
@@ -14,9 +13,9 @@ def index():
 
 
 @app.route('/setframerate')
-def get_distance():
+def set_framerate():
     rate = request.args.get("rate", default="24", type=str)
-    if rate == 0:
+    if rate == '0':
         rate = '24'
     with open(path_for_files + "/frame_rate.txt", "w") as f:
         f.write(rate)
@@ -26,8 +25,8 @@ def get_distance():
 @app.route('/getname')
 def get_name():
     person_name = fr.recognize(path_for_files + '/video/web_cap.jpg')
-    # with open(path_for_files + "/person_name.txt", 'w') as f:
-    #     f.write(person_name)
+    with open(path_for_files + "/person_name.txt", 'w') as f:
+        f.write(person_name)
 
     # with open(path_for_files + "/person_name.txt", "r") as fin:
     #     person_name = fin.read()
@@ -46,10 +45,13 @@ def get_distance():
 
 @app.route('/setauth', methods=['GET', 'POST'])
 def set_auth():
-
-    if get_name() != 'Huy':
+    with open(path_for_files + "/person_name.txt", 'r') as f:
+        person_name = f.read()
+    with open(path_for_files + "/person_distance.txt", "r") as f:
+        person_distance = int(f.read())
+    if person_name != 'Huy':
         return "Name not exist!"
-    elif get_distance() > 1500 or get_distance() < 500:
+    elif person_distance > 1500 or person_distance < 500:
         return "Distance not matched!"
     else:
         with open(path_for_files + "/auth_stat.txt", "w") as f:

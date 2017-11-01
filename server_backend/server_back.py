@@ -7,6 +7,7 @@ import cv2
 
 from time import sleep
 import socket
+import os
 import time
 import faceRec_API as fr
 
@@ -19,7 +20,8 @@ sock.bind(('', PORT))
 sock.listen(10)
 print "Start listening on port " + str(PORT)
 
-path_for_files = "/home/huy/MyFancyDoorOpener_BackEnd_ver2/server_backend"
+userhome = os.path.expanduser('~')
+path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
 
 
 while 1:
