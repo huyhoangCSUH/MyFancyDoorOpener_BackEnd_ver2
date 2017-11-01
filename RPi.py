@@ -1,12 +1,8 @@
-import os
-import numpy as np
-from time import sleep
 import socket
-import sys
-import time
 import cv2
 import VL53L0X
 import pyttsx
+import time
 
 HOST = '45.55.226.236'
 PORT = 9999
@@ -62,13 +58,34 @@ def asking_auth():
         engine.runAndWait()
     return
 
+
+def asking_for_framerate():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send("asking_for_framerate")
+
+    new_rate = s.recv(10)
+    new_rate = new_rate.strip()
+    return int(new_rate)
+
+
 # Start streaming webcam
 print "Starting camera."
 cam = cv2.VideoCapture(0)
 time.sleep(1)
+frame_rate = 24
+start = time.time()
 
 print "Start capturing images"
 while 1:
+    end = time.time()
+
+    #Check frame rate request after every 15 seconds
+    if end - start > 15:
+        frame_rate = asking_for_framerate()
+        start = time.time()
+
+    print "Frame rate: " + str(frame_rate)
     ret, frame = cam.read()
     if ret:
         frame = cv2.resize(frame, (480, 270))
@@ -97,7 +114,7 @@ while 1:
 
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
-    time.sleep(1)
+    time.sleep(1.0/frame_rate)
 
 tof.stop_ranging()
 cam.release()
