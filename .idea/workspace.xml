@@ -3,10 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="31e5d2b8-7caa-4a35-a768-15b9dca16385" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RPi.py" afterPath="$PROJECT_DIR$/RPi.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server_backend/faceRec_API.py" afterPath="$PROJECT_DIR$/server_backend/faceRec_API.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server_backend/server_API.py" afterPath="$PROJECT_DIR$/server_backend/server_API.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server_backend/server_back.py" afterPath="$PROJECT_DIR$/server_backend/server_back.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server_backend/server_video.py" afterPath="$PROJECT_DIR$/server_backend/server_video.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,8 +16,8 @@
       <file leaf-file-name="RPi.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RPi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1287">
-              <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+            <state relative-caret-position="109">
+              <caret line="8" column="32" lean-forward="false" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -465,8 +461,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RPi.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1287">
-          <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+        <state relative-caret-position="109">
+          <caret line="8" column="32" lean-forward="false" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>

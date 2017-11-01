@@ -6,7 +6,7 @@ import time
 import sys
 
 # Get the server IP from the terminal
-HOST = str(sys.argv[0])
+HOST = raw_input("Server address: ")
 PORT = 9999
 PORT_UDP = 10000
 
