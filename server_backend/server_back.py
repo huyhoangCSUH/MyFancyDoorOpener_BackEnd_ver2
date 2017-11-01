@@ -1,3 +1,7 @@
+#
+# This is for server part to handle TCP packets from the RPi
+#
+
 import socket
 import cv2
 
@@ -38,21 +42,21 @@ while 1:
             with open(path_for_files + '/person_distance.txt', 'w') as f:
                 f.write(distance_info)
 
-        elif pilot_msg == "photo":
-            conn.close()
-            conn2, addr2 = sock.accept()
-            # print "Getting person photo"
-
-            with open(path_for_files + '/video/web_cap.jpg', 'wb') as file_to_write:
-                while True:
-                    data = conn2.recv(5*1024)
-                        #print data
-                    if not data:
-                        break
-                    file_to_write.write(data)
-
-            # print "File received!"
-            conn2.close()
+        # elif pilot_msg == "photo":
+        #     conn.close()
+        #     conn2, addr2 = sock.accept()
+        #     # print "Getting person photo"
+        #
+        #     with open(path_for_files + '/video/web_cap.jpg', 'wb') as file_to_write:
+        #         while True:
+        #             data = conn2.recv(5*1024)
+        #                 #print data
+        #             if not data:
+        #                 break
+        #             file_to_write.write(data)
+        #
+        #     # print "File received!"
+        #     conn2.close()
 
             # Start detecting the person
             #frame = cv2.imread(path_for_files + '/video/web_cap.jpg')

@@ -34,9 +34,12 @@ def get_distance():
 
 @app.route('/setauth', methods=['GET', 'POST'])
 def set_auth():
-    with open(path_for_files + "/auth_stat.txt", "w") as f:
-        f.write("1")
-    return "Auth set!"
+    if get_name() == 'Huy' and 500 <= get_distance() <= 1500:
+        with open(path_for_files + "/auth_stat.txt", "w") as f:
+            f.write("1")
+        return "Auth set!"
+    else:
+        return "User info don't match"
 
 
 @app.route('/resetauth', methods=['GET', 'POST'])

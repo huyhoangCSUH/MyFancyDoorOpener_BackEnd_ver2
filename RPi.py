@@ -10,26 +10,15 @@ import pyttsx
 
 HOST = '45.55.226.236'
 PORT = 9999
+PORT_UDP = 10000
 
 
 def send_video_file(file_to_send):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST, PORT))
-
-    s.send("photo")
-    print "pilot sent"
-    s.close()
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST, PORT))
-    file_to_send = open(file_to_send, 'rb')
-    l = file_to_send.read(5*1024)
-    while l:
-        #print 'Sending...'
-        s.send(l)
-        l = file_to_send.read(5*1024)
-    file_to_send.close()
-    s.close()
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    buf = 100*1024
+    f = open(file_to_send, "rb")
+    data = f.read(buf)
+    s.sendto(data, (HOST, PORT_UDP))
 
 tof = VL53L0X.VL53L0X()
 tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)

@@ -67,7 +67,7 @@ def recognize(photo):
     print response
 
     if 'images' in response:
-        if 'subject_id' in ['images'][0]['transaction']:
+        if 'subject_id' in response['images'][0]['transaction']:
             person_name = response['images'][0]['transaction']['subject_id']
 
     #print person_name
