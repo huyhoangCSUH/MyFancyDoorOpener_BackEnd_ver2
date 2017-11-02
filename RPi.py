@@ -56,7 +56,7 @@ def asking_auth():
     print(auth_code)
     if auth_code == '1':
         engine = pyttsx.init()
-        engine.say('Welcome home!.')
+        engine.say('Welcome home Huy')
         engine.runAndWait()
     return
 
