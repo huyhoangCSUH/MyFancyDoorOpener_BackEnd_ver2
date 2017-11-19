@@ -7,6 +7,7 @@ app = Flask(__name__)
 userhome = os.path.expanduser('~')
 path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
 
+
 @app.route('/')
 def index():
     return 'Under construction!'
@@ -22,11 +23,18 @@ def set_framerate():
         return "Frame rate set!"
 
 
+@app.route('/getnotification')
+def get_notification():
+    with open(path_for_files + "/notification.txt", 'w') as f:
+        notification = f.read()  # 0 for no and 1 for yes
+    return notification
+
+
 @app.route('/getname')
 def get_name():
-    person_name = fr.recognize(path_for_files + '/video/web_cap.jpg')
+    #person_name = fr.recognize(path_for_files + '/video/web_cap.jpg')
     with open(path_for_files + "/person_name.txt", 'w') as f:
-        f.write(person_name)
+        person_name = f.read()
 
     # with open(path_for_files + "/person_name.txt", "r") as fin:
     #     person_name = fin.read()
@@ -45,13 +53,13 @@ def get_distance():
 
 @app.route('/setauth', methods=['GET', 'POST'])
 def set_auth():
-    with open(path_for_files + "/person_name.txt", 'r') as f:
-        person_name = f.read()
+    # with open(path_for_files + "/person_name.txt", 'r') as f:
+    #     person_name = f.read()
     with open(path_for_files + "/person_distance.txt", "r") as f:
         person_distance = int(f.read())
-    if person_name != 'Huy':
-        return "Name not exist!"
-    elif person_distance > 1500 or person_distance < 500:
+    # if person_name != 'Huy':
+    #     return "Name not exist!"
+    if person_distance > 1500 or person_distance < 500:
         return "Distance not matched!"
     else:
         with open(path_for_files + "/auth_stat.txt", "w") as f:

@@ -3,6 +3,7 @@ import json
 import base64
 import os
 
+
 def enroll(photo):
     url = "https://api.kairos.com/enroll"
 

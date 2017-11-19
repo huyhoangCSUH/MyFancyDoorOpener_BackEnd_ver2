@@ -23,9 +23,19 @@ print "Start listening on port " + str(PORT)
 userhome = os.path.expanduser('~')
 path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
 
-
+start = time.time()
 while 1:
-    #rint "listening..."
+    end = time.time()
+    if end - start > 5:
+        with open(path_for_files + '/person_name.txt', 'w') as f:
+            name = f.read()
+        with open(path_for_files + '/person_distance.txt', 'w') as f:
+            distance = f.read()
+        if name_info == 'Huy' and 500 <= distance <= 1500:
+            with open(path_for_files + '/notification.txt', 'w') as f:
+                f.write('1')
+
+    #print "listening..."
     try:
         conn, addr = sock.accept()
         pilot_msg = conn.recv(20)
@@ -37,40 +47,26 @@ while 1:
             # print "Getting person distance"
             conn2, addr2 = sock.accept()
             distance_msg = conn2.recv(1024)
-            #print(auth_msg)
+
             conn2.close()
 
             distance_info = distance_msg.decode('utf-8')
             with open(path_for_files + '/person_distance.txt', 'w') as f:
                 f.write(distance_info)
 
-        # elif pilot_msg == "photo":
-        #     conn.close()
-        #     conn2, addr2 = sock.accept()
-        #     # print "Getting person photo"
-        #
-        #     with open(path_for_files + '/video/web_cap.jpg', 'wb') as file_to_write:
-        #         while True:
-        #             data = conn2.recv(5*1024)
-        #                 #print data
-        #             if not data:
-        #                 break
-        #             file_to_write.write(data)
-        #
-        #     # print "File received!"
-        #     conn2.close()
+        elif pilot_msg == "person_name":
+            conn.close()
+            conn2, addr2 = sock.accept()
+            name_msg = conn2.recv(1024)
+            conn2.close()
 
-            # Start detecting the person
-            #frame = cv2.imread(path_for_files + '/video/web_cap.jpg')
-            #have_face, face, rect = fr.extract_a_face(frame, 1.2)
-            #person = 'Undetected'
-            #if have_face:
-            #    frame, person = fr.predict(frame)
-            #print person
-            #with open(path_for_files + '/person_name.txt', 'w') as f:
-            #    f.write(person)
+            name_info = name_msg.decode('utf-8')
+            with open(path_for_files + '/person_name.txt', 'w') as f:
+                f.write(name_info)
 
-            #cv2.imwrite(path_for_files + '/video/web_cap.jpg', frame)
+            if name_info == 'Huy':
+                with open(path_for_files + '/notification.txt', 'w') as f:
+                    f.write('1')
 
         elif pilot_msg == "asking_for_auth":
             with open(path_for_files + '/auth_stat.txt') as f:
@@ -83,7 +79,6 @@ while 1:
                 frame_rate = f.read()
             conn.sendall(frame_rate)
             conn.close()
-
 
     except Exception as msg:
         print str(msg)
