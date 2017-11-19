@@ -27,6 +27,7 @@ def set_framerate():
 def get_notification():
     with open(path_for_files + "/notification.txt", 'r') as f:
         notification = f.read()  # 0 for no and 1 for yes
+    print notification
     return notification
 
 
