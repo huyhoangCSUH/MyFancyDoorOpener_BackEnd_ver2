@@ -25,7 +25,7 @@ def set_framerate():
 
 @app.route('/getnotification')
 def get_notification():
-    with open(path_for_files + "/notification.txt", 'r') as f:
+    with open(path_for_files + "/notification.txt") as f:
         notification = f.read()  # 0 for no and 1 for yes
     print notification
     return notification
