@@ -1,6 +1,7 @@
 from gevent.wsgi import WSGIServer
 from flask import Flask, request, Response
 import faceRec_API as fr
+import time
 import os
 app = Flask(__name__)
 
@@ -81,6 +82,7 @@ def load_photo():
         frame = open(path_for_files + '/video/web_cap.jpg').read()
         yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        time.sleep(1)
 
 
 @app.route('/video_feed')

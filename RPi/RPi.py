@@ -3,8 +3,8 @@ import cv2
 import VL53L0X
 import pyttsx
 import time
-import faceRec_API as fr
-import sys
+import RPi_facerecapi as fr
+
 
 # Get the server IP from the terminal
 HOST = raw_input("Server address: ")
@@ -83,36 +83,36 @@ def asking_for_framerate():
     new_rate = new_rate.strip()
     return int(new_rate)
 
-
 # Start streaming webcam
 print "Starting camera."
 cam = cv2.VideoCapture(0)
 time.sleep(1)
 
 # Retrieving frame rate for the first time
-frame_rate = asking_for_framerate()
-start = time.time()
+#frame_rate = asking_for_framerate()
+# start = time.time()
 
 print "Start capturing images"
 while 1:
-    end = time.time()
-
+    #end = time.time()
     #Check new frame rate after every 15 seconds and call Kairos API
-    if end - start > 15:
-        frame_rate = asking_for_framerate()
-        person_name = fr.recognize("webcam_cap.jpg")
-        print "name retrieved: " + str(person_name)
+    #if end - start > 15:
+        #frame_rate = asking_for_framerate()
 
-        send_name(person_name)
-        person_distance = get_distance_from_sensor()
-        send_distance(person_distance)
+        #person_name = fr.recognize("webcam_cap.jpg")
+        #print "name retrieved: " + str(person_name)
 
+        #send_name(person_name)
+        #person_distance = get_distance_from_sensor()
+        #send_distance(person_distance)
 
-        start = time.time()
+        #start = time.time()
 
-    print "Frame rate: " + str(frame_rate)
+    #print "Frame rate: " + str(frame_rate)
+    print "Frame rate: 1"
     ret, frame = cam.read()
     if ret:
+        # Resize before sending
         frame = cv2.resize(frame, (480, 270))
         cv2.imwrite("webcam_cap.jpg", frame)
 
@@ -120,10 +120,7 @@ while 1:
 
         send_video_file("webcam_cap.jpg")
 
-        # This part will get a person distance from the sensor
-
-
-        asking_auth()
+        #asking_auth()
 
         #have_face, face, rect = extract_a_face(frame, 1.2)
         #person_info = ""
@@ -134,11 +131,11 @@ while 1:
         #     person_info = "{person: none, distance: 0mm}"
         #cv2.imshow("Livestream", frame)
 
-    # Resize before sending
-
-    if cv2.waitKey(10) & 0xFF == ord('q'):
-        break
+    # if cv2.waitKey(10) & 0xFF == ord('q'):
+    #     break
+    frame_rate = 1
     time.sleep(1.0/frame_rate)
+
 
 tof.stop_ranging()
 cam.release()
