@@ -3,6 +3,7 @@ import cv2
 import VL53L0X
 import pyttsx
 import time
+import faceRec_API as fr
 import sys
 
 # Get the server IP from the terminal
@@ -46,6 +47,18 @@ def send_distance(distance):
     s.close()
 
 
+def send_name(person_name):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send("person_name")
+    print "person name sent!"
+    s.close()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send(person_name)
+    s.close()
+
+
 def asking_auth():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((HOST, PORT))
@@ -84,9 +97,17 @@ print "Start capturing images"
 while 1:
     end = time.time()
 
-    #Check new frame rate after every 15 seconds
+    #Check new frame rate after every 15 seconds and call Kairos API
     if end - start > 15:
         frame_rate = asking_for_framerate()
+        person_name = fr.recognize("webcam_cap.jpg")
+        print "name retrieved: " + str(person_name)
+
+        send_name(person_name)
+        person_distance = get_distance_from_sensor()
+        send_distance(person_distance)
+
+
         start = time.time()
 
     print "Frame rate: " + str(frame_rate)
@@ -100,8 +121,7 @@ while 1:
         send_video_file("webcam_cap.jpg")
 
         # This part will get a person distance from the sensor
-        person_distance = get_distance_from_sensor()
-        send_distance(person_distance)
+
 
         asking_auth()
 

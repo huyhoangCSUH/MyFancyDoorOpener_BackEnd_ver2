@@ -34,7 +34,7 @@ def get_notification():
 @app.route('/getname')
 def get_name():
     #person_name = fr.recognize(path_for_files + '/video/web_cap.jpg')
-    with open(path_for_files + "/person_name.txt", 'w') as f:
+    with open(path_for_files + "/person_name.txt", 'r') as f:
         person_name = f.read()
 
     # with open(path_for_files + "/person_name.txt", "r") as fin:

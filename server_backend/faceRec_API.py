@@ -1,7 +1,6 @@
 import requests
 import json
 import base64
-import os
 
 
 def enroll(photo):
@@ -28,7 +27,6 @@ def enroll(photo):
 def verify(photo):
     url = "https://api.kairos.com/verify"
 
-
     headr = {
         'Content-type': 'application/json',
         'app_id': '38280dd7',
@@ -49,8 +47,7 @@ def verify(photo):
 
 def recognize(photo):
     url = "https://api.kairos.com/recognize"
-    userhome = os.path.expanduser('~')
-    path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
+
     headr = {
         'Content-type': 'application/json',
         'app_id': '38280dd7',
@@ -72,8 +69,5 @@ def recognize(photo):
         if 'subject_id' in response['images'][0]['transaction']:
             person_name = response['images'][0]['transaction']['subject_id']
 
-    #print person_name
     return person_name
 
-#photofile = '/Users/huyhoang/PycharmProjects/MyFancyDoorOpener_BackEnd_ver2/server_backend/training-data/person0/9.jpg'
-#recognize(photofile)
