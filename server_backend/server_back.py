@@ -9,7 +9,6 @@ from time import sleep
 import socket
 import os
 import time
-import faceRec_API as fr
 
 
 #HOST = '127.0.0.1'
@@ -26,14 +25,14 @@ path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
 start = time.time()
 while 1:
     end = time.time()
-    if end - start > 5:
-        with open(path_for_files + '/person_name.txt', 'w') as f:
-            name = f.read()
-        with open(path_for_files + '/person_distance.txt', 'w') as f:
-            distance = f.read()
-        if name_info == 'Huy' and 500 <= distance <= 1500:
-            with open(path_for_files + '/notification.txt', 'w') as f:
-                f.write('1')
+    #if end - start > 5:
+        # with open(path_for_files + '/person_name.txt', 'w') as f:
+        #     name = f.read()
+        # with open(path_for_files + '/person_distance.txt', 'w') as f:
+        #     distance = f.read()
+        # if name_info == 'Huy' and 500 <= distance <= 1500:
+        #     with open(path_for_files + '/notification.txt', 'w') as f:
+        #         f.write('1')
 
     #print "listening..."
     try:

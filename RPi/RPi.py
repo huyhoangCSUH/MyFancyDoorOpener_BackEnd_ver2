@@ -90,7 +90,7 @@ time.sleep(1)
 
 # Retrieving frame rate for the first time
 #frame_rate = asking_for_framerate()
-# start = time.time()
+#start = time.time()
 
 print "Start capturing images"
 while 1:
@@ -120,7 +120,7 @@ while 1:
 
         send_video_file("webcam_cap.jpg")
 
-        #asking_auth()
+        asking_auth()
 
         #have_face, face, rect = extract_a_face(frame, 1.2)
         #person_info = ""
