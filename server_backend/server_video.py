@@ -24,6 +24,7 @@ while True:
     end = time.time()
     if end - start > 300:
         print "Frame received: " + str(num_of_frame)
+        break
 
     # Now start receiving the photo
     data, addr = s.recvfrom(buf)

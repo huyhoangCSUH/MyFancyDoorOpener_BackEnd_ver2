@@ -94,13 +94,14 @@ start = time.time()
 
 print "Start capturing images"
 num_of_frame = 0
+
 while 1:
     end = time.time()
     #Check new frame rate after every 15 seconds and call Kairos API
     #if end - start > 15:
         #frame_rate = asking_for_framerate()
         #print "Request Kairos API"
-        person_name = fr.recognize("webcam_cap.jpg")
+        #person_name = fr.recognize("webcam_cap.jpg")
         #print "name retrieved: " + str(person_name)
 
         #send_name(person_name)
@@ -138,8 +139,9 @@ while 1:
 
     # if cv2.waitKey(10) & 0xFF == ord('q'):
     #     break
-    frame_rate = 24
-    time.sleep(1.0/frame_rate)
+
+    #time.sleep(1.0/frame_rate)
+    time.sleep(0.04)
 
 tof.stop_ranging()
 cam.release()
