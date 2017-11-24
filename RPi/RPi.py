@@ -74,14 +74,14 @@ def asking_auth():
     return
 
 
-def asking_for_framerate():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST, PORT))
-    s.send("asking_for_framerate")
-
-    new_rate = s.recv(10)
-    new_rate = new_rate.strip()
-    return int(new_rate)
+# def asking_for_framerate():
+#     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     s.connect((HOST, PORT))
+#     s.send("asking_for_framerate")
+#
+#     new_rate = s.recv(10)
+#     new_rate = new_rate.strip()
+#     return int(new_rate)
 
 # Start streaming webcam
 print "Starting camera."
@@ -90,16 +90,17 @@ time.sleep(1)
 
 # Retrieving frame rate for the first time
 #frame_rate = asking_for_framerate()
-#start = time.time()
+start = time.time()
 
 print "Start capturing images"
+num_of_frame = 0
 while 1:
-    #end = time.time()
+    end = time.time()
     #Check new frame rate after every 15 seconds and call Kairos API
     #if end - start > 15:
         #frame_rate = asking_for_framerate()
-
-        #person_name = fr.recognize("webcam_cap.jpg")
+        #print "Request Kairos API"
+        person_name = fr.recognize("webcam_cap.jpg")
         #print "name retrieved: " + str(person_name)
 
         #send_name(person_name)
@@ -109,7 +110,11 @@ while 1:
         #start = time.time()
 
     #print "Frame rate: " + str(frame_rate)
-    print "Frame rate: 1"
+    #print "Frame rate: "
+    if end - start > 300:
+        print "Num of frame sent over 5 min: " + str(num_of_frame)
+        break
+
     ret, frame = cam.read()
     if ret:
         # Resize before sending
@@ -117,10 +122,10 @@ while 1:
         cv2.imwrite("webcam_cap.jpg", frame)
 
         print "Sending a frame"
-
+        num_of_frame += 1
         send_video_file("webcam_cap.jpg")
 
-        asking_auth()
+        #asking_auth()
 
         #have_face, face, rect = extract_a_face(frame, 1.2)
         #person_info = ""
@@ -133,9 +138,8 @@ while 1:
 
     # if cv2.waitKey(10) & 0xFF == ord('q'):
     #     break
-    frame_rate = 1
+    frame_rate = 24
     time.sleep(1.0/frame_rate)
-
 
 tof.stop_ranging()
 cam.release()

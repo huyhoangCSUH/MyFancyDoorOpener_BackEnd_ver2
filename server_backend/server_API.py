@@ -1,6 +1,5 @@
 from gevent.wsgi import WSGIServer
 from flask import Flask, request, Response
-import faceRec_API as fr
 import time
 import os
 app = Flask(__name__)
@@ -19,6 +18,7 @@ def set_framerate():
     rate = request.args.get("rate", default="24", type=str)
     if rate == '0':
         rate = '24'
+
     with open(path_for_files + "/frame_rate.txt", "w") as f:
         f.write(rate)
         return "Frame rate set!"
@@ -69,7 +69,6 @@ def set_auth():
         return "Auth set!"
 
 
-
 @app.route('/resetauth', methods=['GET', 'POST'])
 def reset_auth():
     with open(path_for_files + "/auth_stat.txt", "w") as f:
@@ -78,11 +77,19 @@ def reset_auth():
 
 
 def load_photo():
+    start = time.time()
     while True:
+        end = time.time()
+        if end - start > 10:
+            with open(path_for_files + "/frame_rate.txt", "r") as f:
+                rate = f.read()
+                frame_rate = int(rate)
+                print "Current frame rate: " + rate + "fps"
+            start = time.time()
         frame = open(path_for_files + '/video/web_cap.jpg').read()
         yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        time.sleep(1)
+        time.sleep(1.0/frame_rate)
 
 
 @app.route('/video_feed')
