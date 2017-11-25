@@ -79,10 +79,10 @@ def reset_auth():
 
 
 def load_photo():
+    while True:
+        frame = open(path_for_files + '/video/web_cap.jpg').read()
 
-    frame = open(path_for_files + '/video/web_cap.jpg').read()
-
-    yield (b'--frame\r\n'
+        yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 

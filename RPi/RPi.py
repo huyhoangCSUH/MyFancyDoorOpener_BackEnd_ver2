@@ -104,6 +104,7 @@ start = time.time()
 
 print "Start capturing images"
 frames = 0
+quality = 1
 while 1:
     end = time.time()
     #Check new frame rate and quality after every 15 seconds and call Kairos API
