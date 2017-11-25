@@ -83,6 +83,16 @@ def asking_for_framerate():
     new_rate = new_rate.strip()
     return int(new_rate)
 
+
+def asking_for_quality():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send("asking_for_quality")
+
+    new_quality = s.recv(10)
+    new_quality = new_quality.strip()
+    return int(new_quality)
+
 # Start streaming webcam
 print "Starting camera."
 cam = cv2.VideoCapture(0)
@@ -96,9 +106,10 @@ print "Start capturing images"
 frames = 0
 while 1:
     end = time.time()
-    #Check new frame rate after every 15 seconds and call Kairos API
+    #Check new frame rate and quality after every 15 seconds and call Kairos API
     if end - start > 15:
         frame_rate = asking_for_framerate()
+        quality = asking_for_quality()
         #print "Request Kairos API"
         person_name = fr.recognize("webcam_cap.jpg")
         print "name retrieved: " + str(person_name)
@@ -115,6 +126,8 @@ while 1:
     if ret:
         # Resize before sending
         frame = cv2.resize(frame, (480, 270))
+        if quality == 0:
+            frame = cv2.resize(frame, (120, 67))
         cv2.imwrite("webcam_cap.jpg", frame)
 
         print "Sending a frame"

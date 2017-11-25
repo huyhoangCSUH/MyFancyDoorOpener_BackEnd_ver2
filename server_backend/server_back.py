@@ -83,6 +83,12 @@ while 1:
             conn.sendall(frame_rate)
             conn.close()
 
+        elif pilot_msg == "asking_for_quality":
+            with open(path_for_files + '/quality.txt') as f:
+                quality = f.read()
+            conn.sendall(quality)
+            conn.close()
+
         elif pilot_msg == "add_new_user":
             conn.close()
             conn2, addr2 = sock.accept()
