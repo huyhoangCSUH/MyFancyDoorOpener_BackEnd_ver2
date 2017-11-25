@@ -5,7 +5,6 @@
 import socket
 import cv2
 
-from time import sleep
 import socket
 import os
 import time
@@ -63,7 +62,12 @@ while 1:
             with open(path_for_files + '/person_name.txt', 'w') as f:
                 f.write(name_info)
 
-            if name_info == 'Huy':
+            users = []
+            with open(path_for_files + '/users_list.txt', 'r') as f:
+                for line in f:
+                    users.append(line.strip())
+
+            if name_info in users:
                 with open(path_for_files + '/notification.txt', 'w') as f:
                     f.write('1')
 
@@ -73,11 +77,15 @@ while 1:
             conn.sendall(auth_code)
             conn.close()
 
-        # elif pilot_msg == "asking_for_framerate":
-        #     with open(path_for_files + '/frame_rate.txt') as f:
-        #         frame_rate = f.read()
-        #     conn.sendall(frame_rate)
-        #     conn.close()
+        elif pilot_msg == "add_new_user":
+            conn.close()
+            conn2, addr2 = sock.accept()
+            new_user_name = conn2.recv(1024)
+            new_user_name = new_user_name.strip()
+            conn2.close()
+            with open(path_for_files + '/users_list.txt', 'a+') as f:
+                f.write(new_user_name)
+
 
     except Exception as msg:
         print str(msg)

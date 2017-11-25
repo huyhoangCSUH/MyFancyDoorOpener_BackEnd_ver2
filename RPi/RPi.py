@@ -74,15 +74,6 @@ def asking_auth():
     return
 
 
-# def asking_for_framerate():
-#     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#     s.connect((HOST, PORT))
-#     s.send("asking_for_framerate")
-#
-#     new_rate = s.recv(10)
-#     new_rate = new_rate.strip()
-#     return int(new_rate)
-
 # Start streaming webcam
 print "Starting camera."
 cam = cv2.VideoCapture(0)
@@ -93,8 +84,7 @@ time.sleep(1)
 start = time.time()
 
 print "Start capturing images"
-num_of_frame = 0
-
+frames = 0
 while 1:
     end = time.time()
     #Check new frame rate after every 15 seconds and call Kairos API
@@ -111,9 +101,8 @@ while 1:
         #start = time.time()
 
     #print "Frame rate: " + str(frame_rate)
-    #print "Frame rate: "
     if end - start > 300:
-        print "Num of frame sent over 5 min: " + str(num_of_frame)
+        print "Num of frame sent: " + str(frames)
         break
 
     ret, frame = cam.read()
@@ -123,9 +112,8 @@ while 1:
         cv2.imwrite("webcam_cap.jpg", frame)
 
         print "Sending a frame"
-        num_of_frame += 1
         send_video_file("webcam_cap.jpg")
-
+        frames += 1
         #asking_auth()
 
         #have_face, face, rect = extract_a_face(frame, 1.2)
@@ -141,7 +129,7 @@ while 1:
     #     break
 
     #time.sleep(1.0/frame_rate)
-    time.sleep(0.04)
+    #time.sleep(0.04)
 
 tof.stop_ranging()
 cam.release()

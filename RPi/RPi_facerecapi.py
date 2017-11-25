@@ -3,7 +3,7 @@ import json
 import base64
 
 
-def enroll(photo):
+def enroll(photo, name):
     url = "https://api.kairos.com/enroll"
 
     headr = {
@@ -14,7 +14,7 @@ def enroll(photo):
 
     payload = {
         'image': base64.b64encode(open(photo).read()),
-        'subject_id': 'Huy',
+        'subject_id': name,
         'gallery_name': 'HuyHoang'
     }
 
@@ -24,7 +24,7 @@ def enroll(photo):
     print response
 
 
-def verify(photo):
+def verify(photo, name):
     url = "https://api.kairos.com/verify"
 
     headr = {
@@ -35,7 +35,7 @@ def verify(photo):
 
     payload = {
         'image': base64.b64encode(open(photo).read()),
-        'subject_id': 'Huy',
+        'subject_id': name,
         'gallery_name': 'HuyHoang'
     }
 

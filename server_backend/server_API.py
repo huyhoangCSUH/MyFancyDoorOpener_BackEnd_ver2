@@ -1,7 +1,9 @@
 from gevent.wsgi import WSGIServer
-from flask import Flask, request, Response
+from flask import Flask, request, Response, send_from_directory
 import time
 import os
+import cv2
+
 app = Flask(__name__)
 
 userhome = os.path.expanduser('~')
@@ -78,18 +80,24 @@ def reset_auth():
 
 def load_photo():
     start = time.time()
+    frame_rate = 1.0/24
+    quality = '1'
+    # Check video quality and frame rate each 5 second
     while True:
         end = time.time()
-        if end - start > 10:
+        if end - start > 5:
             with open(path_for_files + "/frame_rate.txt", "r") as f:
                 rate = f.read()
-                frame_rate = int(rate)
                 print "Current frame rate: " + rate + "fps"
+                frame_rate = 1.0/int(rate)
+
             start = time.time()
         frame = open(path_for_files + '/video/web_cap.jpg').read()
+        if quality == '0':
+            frame = cv2.resize(frame, (480, 135))  # reduce half size
         yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        time.sleep(1.0/frame_rate)
+        time.sleep(frame_rate)
 
 
 @app.route('/video_feed')
@@ -97,6 +105,24 @@ def video_feed():
     return Response(load_photo(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+@app.route('/getdummyfile')
+def return_dummy_file():
+    return send_from_directory(path_for_files, "dummyfile")
+
+
+@app.route('/set_video_high')
+def set_video_high_quality():
+    with open(path_for_files + "/quality.txt", "w") as f:
+        f.write("1")
+    return "Video quality high"
+
+
+@app.route('/set_video_low')
+def set_video_low_quality():
+    with open(path_for_files + "/quality.txt", "w") as f:
+        f.write("0")
+    return "Video quality high"
 
 http_server = WSGIServer(('', 8000), app)
 http_server.serve_forever()
