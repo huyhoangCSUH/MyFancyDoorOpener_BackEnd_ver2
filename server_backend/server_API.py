@@ -81,6 +81,10 @@ def reset_auth():
 def load_photo():
 
     frame = open(path_for_files + '/video/web_cap.jpg').read()
+    with open(path_for_files + "/quality.txt", "r") as f:
+        quality = int(f.read())
+    if quality == 0:
+        frame = cv2.resize(frame, (240, 135))
     yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
