@@ -88,9 +88,11 @@ def load_photo():
         if end - start > 5:
             with open(path_for_files + "/frame_rate.txt", "r") as f:
                 rate = f.read()
-                print "Current frame rate: " + rate + "fps"
+                #print "Current frame rate: " + rate + "fps"
                 frame_rate = 1.0/int(rate)
-
+            with open(path_for_files + "/quality.txt", "r") as f:
+                quality = f.read().strip()
+            print "Quality: " + quality
             start = time.time()
         frame = open(path_for_files + '/video/web_cap.jpg').read()
         if quality == '0':
