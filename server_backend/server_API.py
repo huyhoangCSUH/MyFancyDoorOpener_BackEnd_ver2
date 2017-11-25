@@ -79,27 +79,10 @@ def reset_auth():
 
 
 def load_photo():
-    start = time.time()
-    frame_rate = 1.0/24
-    quality = '1'
-    # Check video quality and frame rate each 5 second
-    while True:
-        end = time.time()
-        if end - start > 5:
-            with open(path_for_files + "/frame_rate.txt", "r") as f:
-                rate = f.read()
-                #print "Current frame rate: " + rate + "fps"
-                frame_rate = 1.0/int(rate)
-            with open(path_for_files + "/quality.txt", "r") as f:
-                quality = f.read().strip()
-            print "Quality: " + quality
-            start = time.time()
-        frame = open(path_for_files + '/video/web_cap.jpg').read()
-        if quality == '0':
-            frame = cv2.resize(frame, (480, 135))  # reduce half size
-        yield (b'--frame\r\n'
+
+    frame = open(path_for_files + '/video/web_cap.jpg').read()
+    yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        time.sleep(frame_rate)
 
 
 @app.route('/video_feed')

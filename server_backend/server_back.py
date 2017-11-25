@@ -77,6 +77,12 @@ while 1:
             conn.sendall(auth_code)
             conn.close()
 
+        elif pilot_msg == "asking_for_framerate":
+            with open(path_for_files + '/frame_rate.txt') as f:
+                frame_rate = f.read()
+            conn.sendall(frame_rate)
+            conn.close()
+
         elif pilot_msg == "add_new_user":
             conn.close()
             conn2, addr2 = sock.accept()

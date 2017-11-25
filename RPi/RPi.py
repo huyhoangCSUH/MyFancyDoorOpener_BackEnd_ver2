@@ -74,13 +74,22 @@ def asking_auth():
     return
 
 
+def asking_for_framerate():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    s.send("asking_for_framerate")
+
+    new_rate = s.recv(10)
+    new_rate = new_rate.strip()
+    return int(new_rate)
+
 # Start streaming webcam
 print "Starting camera."
 cam = cv2.VideoCapture(0)
 time.sleep(1)
 
 # Retrieving frame rate for the first time
-#frame_rate = asking_for_framerate()
+frame_rate = asking_for_framerate()
 start = time.time()
 
 print "Start capturing images"
@@ -88,22 +97,19 @@ frames = 0
 while 1:
     end = time.time()
     #Check new frame rate after every 15 seconds and call Kairos API
-    #if end - start > 15:
-        #frame_rate = asking_for_framerate()
+    if end - start > 15:
+        frame_rate = asking_for_framerate()
         #print "Request Kairos API"
-        #person_name = fr.recognize("webcam_cap.jpg")
-        #print "name retrieved: " + str(person_name)
+        person_name = fr.recognize("webcam_cap.jpg")
+        print "name retrieved: " + str(person_name)
 
-        #send_name(person_name)
-        #person_distance = get_distance_from_sensor()
-        #send_distance(person_distance)
+        send_name(person_name)
+        person_distance = get_distance_from_sensor()
+        send_distance(person_distance)
 
-        #start = time.time()
+        start = time.time()
 
-    #print "Frame rate: " + str(frame_rate)
-    if end - start > 300:
-        print "Num of frame sent: " + str(frames)
-        break
+    print "Frame rate: " + str(frame_rate)
 
     ret, frame = cam.read()
     if ret:
@@ -113,7 +119,6 @@ while 1:
 
         print "Sending a frame"
         send_video_file("webcam_cap.jpg")
-        frames += 1
         #asking_auth()
 
         #have_face, face, rect = extract_a_face(frame, 1.2)
@@ -128,8 +133,8 @@ while 1:
     # if cv2.waitKey(10) & 0xFF == ord('q'):
     #     break
 
-    #time.sleep(1.0/frame_rate)
-    #time.sleep(0.04)
+    time.sleep(1.0/frame_rate)
+
 
 tof.stop_ranging()
 cam.release()
