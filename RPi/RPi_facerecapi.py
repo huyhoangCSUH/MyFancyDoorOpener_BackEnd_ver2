@@ -62,7 +62,7 @@ def recognize(photo):
     r = requests.post(url, headers=headr, data=json.dumps(payload))
 
     response = json.loads(r.content)
-    person_name = 'Unidentified!'
+    person_name = 'Unidentified'
     print response
 
     if 'images' in response:

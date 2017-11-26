@@ -58,20 +58,20 @@ def send_name(person_name):
     s.send(person_name)
     s.close()
 
-
-def asking_auth():
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((HOST, PORT))
-    s.send("asking_for_auth")
-
-    auth_code = s.recv(10)
-    auth_code = auth_code.strip()
-    print(auth_code)
-    if auth_code == '1':
-        engine = pyttsx.init()
-        engine.say('Welcome home Huy')
-        engine.runAndWait()
-    return
+#
+# def asking_auth():
+#     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     s.connect((HOST, PORT))
+#     s.send("asking_for_auth")
+#
+#     auth_code = s.recv(10)
+#     auth_code = auth_code.strip()
+#     print(auth_code)
+#     if auth_code == '1':
+#         engine = pyttsx.init()
+#         engine.say('Welcome home Huy')
+#         engine.runAndWait()
+#     return
 
 
 def asking_for_framerate():
@@ -106,29 +106,15 @@ print "Start capturing images"
 frames = 0
 quality = 1
 while 1:
-    end = time.time()
-    #Check new frame rate and quality after every 15 seconds and call Kairos API
-    if end - start > 15:
-        frame_rate = asking_for_framerate()
-        quality = asking_for_quality()
-        #print "Request Kairos API"
-        person_name = fr.recognize("webcam_cap.jpg")
-        print "name retrieved: " + str(person_name)
 
-        send_name(person_name)
-        person_distance = get_distance_from_sensor()
-        send_distance(person_distance)
-
-        start = time.time()
-
-    print "Frame rate: " + str(frame_rate)
 
     ret, frame = cam.read()
+
     if ret:
         # Resize before sending
         frame = cv2.resize(frame, (480, 270))
         if quality == 0:
-            frame = cv2.resize(frame, (120, 67))
+            frame = cv2.resize(frame, (240, 135))
         cv2.imwrite("webcam_cap.jpg", frame)
 
         print "Sending a frame"
@@ -144,9 +130,27 @@ while 1:
         #     person_info = "{person: none, distance: 0mm}"
         #cv2.imshow("Livestream", frame)
 
-    # if cv2.waitKey(10) & 0xFF == ord('q'):
-    #     break
+    #
+    # Check new frame rate and quality after every 15 seconds and call Kairos API
+    end = time.time()
 
+    if end - start > 15:
+        frame_rate = asking_for_framerate()
+        print "Frame rate: " + str(frame_rate)
+        quality = asking_for_quality()
+        print "quality: " + str(quality)
+
+        person_name = fr.recognize("webcam_cap.jpg")
+        print "name retrieved: " + str(person_name)
+
+        send_name(person_name)
+        person_distance = get_distance_from_sensor()
+        send_distance(person_distance)
+
+        start = time.time()
+
+    if cv2.waitKey(10) & 0xFF == ord('q'):
+        break
     time.sleep(1.0/frame_rate)
 
 

@@ -37,9 +37,9 @@ def main():
 
     add_new_user(new_name)
 
-    print "Clean up"
-    os.remove("img1.jpg")
-    os.remove("img2.jpg")
+    # print "Clean up"
+    # os.remove("img1.jpg")
+    # os.remove("img2.jpg")
 
     print "Now start live recognition, press q anytime to quit"
     start = time.time()

@@ -108,7 +108,7 @@ def set_video_high_quality():
 def set_video_low_quality():
     with open(path_for_files + "/quality.txt", "w") as f:
         f.write("0")
-    return "Video quality high"
+    return "Video quality low"
 
 http_server = WSGIServer(('', 8000), app)
 http_server.serve_forever()
