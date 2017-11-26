@@ -3,14 +3,10 @@
 #
 
 import socket
-import cv2
-
-import socket
 import os
 import time
 
 
-#HOST = '127.0.0.1'
 PORT = 9999
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -24,16 +20,7 @@ path_for_files = userhome + "/MyFancyDoorOpener_BackEnd_ver2/server_backend"
 start = time.time()
 while 1:
     end = time.time()
-    #if end - start > 5:
-        # with open(path_for_files + '/person_name.txt', 'w') as f:
-        #     name = f.read()
-        # with open(path_for_files + '/person_distance.txt', 'w') as f:
-        #     distance = f.read()
-        # if name_info == 'Huy' and 500 <= distance <= 1500:
-        #     with open(path_for_files + '/notification.txt', 'w') as f:
-        #         f.write('1')
 
-    #print "listening..."
     try:
         conn, addr = sock.accept()
         pilot_msg = conn.recv(20)
@@ -70,12 +57,6 @@ while 1:
             if name_info in users:
                 with open(path_for_files + '/notification.txt', 'w') as f:
                     f.write('1')
-
-        elif pilot_msg == "asking_for_auth":
-            with open(path_for_files + '/auth_stat.txt') as f:
-                auth_code = f.read()
-            conn.sendall(auth_code)
-            conn.close()
 
         elif pilot_msg == "asking_for_framerate":
             with open(path_for_files + '/frame_rate.txt') as f:

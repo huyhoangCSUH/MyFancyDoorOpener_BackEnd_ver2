@@ -22,6 +22,7 @@ def enroll(photo, name):
 
     response = json.loads(r.content)
     print response
+    return response
 
 
 def verify(photo, name):
@@ -43,6 +44,7 @@ def verify(photo, name):
 
     response = json.loads(r.content)
     print response
+    return response
 
 
 def recognize(photo):
@@ -56,7 +58,8 @@ def recognize(photo):
 
     payload = {
         'image': base64.b64encode(open(photo).read()),
-        'gallery_name': 'HuyHoang'
+        'gallery_name': 'HuyHoang',
+        'threshold': 40
     }
 
     r = requests.post(url, headers=headr, data=json.dumps(payload))

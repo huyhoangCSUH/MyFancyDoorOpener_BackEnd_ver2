@@ -3,6 +3,7 @@ import cv2
 import time
 import os
 import socket
+import json
 
 HOST = raw_input("Server address: ")
 PORT = 9999
@@ -36,28 +37,7 @@ def main():
         print "Verification complete."
 
     add_new_user(new_name)
-
-    # print "Clean up"
-    # os.remove("img1.jpg")
-    # os.remove("img2.jpg")
-
-    print "Now start live recognition, press q anytime to quit"
-    start = time.time()
-    while 1:
-        ret, frame = cam.read()
-        if ret:
-            frame = cv2.resize(frame, (480, 270))
-            cv2.imwrite("img.jpg", frame)
-
-        end = time.time()
-        if end - start > 15:
-            print "Calling Kairos API"
-            person_name = fr.recognize("img.jpg")
-            print person_name
-            start = time.time()
-
-        if cv2.waitKey(10) & 0xFF == ord('q'):
-            break
+    print "new user added"
 
 
 def add_new_user(person_name):

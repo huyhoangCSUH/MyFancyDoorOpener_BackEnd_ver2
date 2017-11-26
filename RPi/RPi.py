@@ -106,8 +106,6 @@ print "Start capturing images"
 frames = 0
 quality = 1
 while 1:
-
-
     ret, frame = cam.read()
 
     if ret:
